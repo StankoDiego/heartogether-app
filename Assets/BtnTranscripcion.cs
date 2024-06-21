@@ -13,7 +13,7 @@ public class BtnTranscripcion : MonoBehaviour
     private bool isRecording = false;
     private string filePath;
 
-    private const string apiUrl = "http://url:8001/transcribe";
+    private const string apiUrl = "http://url:8001/api/transcribe";
 
     public void Start()
     {
@@ -37,7 +37,7 @@ public class BtnTranscripcion : MonoBehaviour
     {
         if (Microphone.devices.Length > 0)
         {
-            audioSource.clip = Microphone.Start(null, false, 10, 44100);
+            audioSource.clip = Microphone.Start(null, false, 10, 48000);
             isRecording = true;
             Debug.Log("Recording started");
         }
@@ -121,7 +121,6 @@ public class BtnTranscripcion : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post(apiUrl, form))
         {
             Debug.Log("PROBANDO");
-            www.SetRequestHeader("Content-Type", "multipart/form-data");
             www.timeout = 10;
 
             yield return www.SendWebRequest();
