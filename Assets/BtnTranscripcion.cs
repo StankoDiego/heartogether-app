@@ -9,6 +9,7 @@ public class BtnTranscripcion : MonoBehaviour
 {
     // Start is called before the first frame update
     public Button btnTranscripcion;
+    public Text textTitle;
     private AudioSource audioSource;
     private bool isRecording = false;
     private string filePath;
@@ -39,10 +40,12 @@ public class BtnTranscripcion : MonoBehaviour
         {
             audioSource.clip = Microphone.Start(null, false, 10, 48000);
             isRecording = true;
+            textTitle.text = "Parar transcripcion";
             Debug.Log("Recording started");
         }
         else
         {
+            textTitle.text = "NO MIC DETECTED";
             Debug.LogWarning("No microphone detected");
         }
     }
@@ -54,6 +57,7 @@ public class BtnTranscripcion : MonoBehaviour
             Microphone.End(null);
             isRecording = false;
             Debug.Log("Recording stopped");
+            textTitle.text = "Iniciar Transcripción";
             SaveRecording(audioSource.clip);
             PlayRecordedAudio();
         }
