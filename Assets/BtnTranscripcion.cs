@@ -134,6 +134,8 @@ public class BtnTranscripcion : MonoBehaviour
             else
             {
                 Debug.Log("Response: " + www.downloadHandler.text);
+                GameObject textFieldObject = GameObject.Find("TranscriptionText");
+                textFieldObject.GetComponent<Text>().text = www.downloadHandler.text;
             }
         }
     }
