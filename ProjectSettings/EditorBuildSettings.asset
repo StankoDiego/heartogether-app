@@ -17,6 +17,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Documentos.unity
     guid: b15278416daaed8499a48e0325859a94
+  - enabled: 1
+    path: Assets/Scenes/Ayuda.unity
+    guid: 5f1afd458882abd4ca73f324c1f13b57
+  - enabled: 1
+    path: Assets/Scenes/PreguntasFrecuentes.unity
+    guid: aa9710e9ba929f945a1e856b2d9ca41a
+  - enabled: 1
+    path: Assets/Scenes/SoporteTecnico.unity
+    guid: 0e83d2068b9fbe94dafd406e3e88cdb2
+  - enabled: 1
+    path: Assets/Scenes/Contactos.unity
+    guid: 2a6ccee1b4196ed4aaf0083d0cd04db7
   m_configObjects:
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 4f9bf67eeec93bc498580c73736ba51f, type: 2}
