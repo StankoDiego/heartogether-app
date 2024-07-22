@@ -5,20 +5,37 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class BtnTranscripcion : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     // Start is called before the first frame update
-    public Button btnTranscripcion;
+    [SerializeField] public Button btnTranscripcion;
+    [SerializeField] public GameObject modal;
     private AudioSource audioSource;
     private bool isRecording = false;
     private string filePath;
-
+    [SerializeField] public SignQueue signQueue;
     private const string apiUrl = "http://url:8001/api/transcribe";
 
     public void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         btnTranscripcion.onClick.AddListener(ToggleRecording);
+        modal.SetActive(false);
+        signQueue = FindObjectOfType<SignQueue>(); // Automatically find SignQueue component in the scene
+        if (signQueue == null)
+        {
+            Debug.LogWarning("SignQueue not found!");
+        }
+    }
+
+    public void OpenModal()
+    {
+        modal.SetActive(true);
+    }
+
+    public void CloseModal()
+    {
+        modal.SetActive(false);
     }
 
     public void ToggleRecording()
@@ -43,12 +60,14 @@ public class BtnTranscripcion : MonoBehaviour
         }
         else
         {
+            isRecording = true;
             Debug.LogWarning("No microphone detected");
         }
     }
 
     public void StopRecording()
     {
+        signQueue.StartAnimationQueue(new string[] { "A", "Hola", "Idle", "Hola", "Hola", "A" });
         if (isRecording)
         {
             Microphone.End(null);
@@ -134,6 +153,8 @@ public class BtnTranscripcion : MonoBehaviour
             else
             {
                 Debug.Log("Response: " + www.downloadHandler.text);
+                // Here we should send the text to be used in the
+                // SignSystem script.
             }
         }
     }
@@ -142,11 +163,5 @@ public class BtnTranscripcion : MonoBehaviour
     {
         audioSource.Play();
         Debug.Log("Playing recorded audio");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

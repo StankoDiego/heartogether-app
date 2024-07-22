@@ -38,6 +38,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Modal
+    uniqueID: 1126086209
+    locked: 0
+  - name: Model
+    uniqueID: 2724588337
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
