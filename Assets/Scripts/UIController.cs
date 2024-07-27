@@ -78,7 +78,8 @@ public class UIController : MonoBehaviour
 
     public void StopRecording()
     {
-        signQueue.StartAnimationQueue(new string[] { "A", "Hola", "Idle", "Hola", "Hola", "A" });
+        // TODO: remove hardcoded for testing
+        //signQueue.StartAnimationQueue(new string[] { "A", "Hola", "Idle", "Hola", "Hola", "A" });
         if (isRecording)
         {
             Microphone.End(null);
