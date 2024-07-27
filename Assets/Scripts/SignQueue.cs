@@ -12,8 +12,8 @@ public class SignQueue : MonoBehaviour
   {
     animations = new Dictionary<string, string>
     {
-      { "Idle", "IdleState" },
-      { "Hola", "HolaState" },
+      { "IDLE", "IdleState" },
+      { "HOLA", "HolaState" },
       { "A", "AState" },
       { "B", "BState" }
     };

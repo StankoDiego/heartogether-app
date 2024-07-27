@@ -16,7 +16,7 @@ public class UIController : MonoBehaviour
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
-    private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
+    private const string apiUrl = "http://192.168.0.121:8001/api/transcribe";
 
     public void Start()
     {
