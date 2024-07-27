@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIController : MonoBehaviour
 {
@@ -11,10 +12,11 @@ public class UIController : MonoBehaviour
     [SerializeField] public Button btnTranscripcion;
     [SerializeField] public GameObject modal;
     private AudioSource audioSource;
+    [SerializeField] public TextMeshProUGUI transcriptionText;
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
-    private const string apiUrl = "http://url:8001/api/transcribe";
+    private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
 
     public void Start()
     {
@@ -52,6 +54,15 @@ public class UIController : MonoBehaviour
 
     public void StartRecording()
     {
+        if (transcriptionText != null)
+        {
+            transcriptionText.text = "";
+        }
+        else
+        {
+            Debug.LogError("TranscriptionText reference is not set.");
+        }
+
         if (Microphone.devices.Length > 0)
         {
             audioSource.clip = Microphone.Start(null, false, 10, 48000);
@@ -153,6 +164,36 @@ public class UIController : MonoBehaviour
             else
             {
                 Debug.Log("Response: " + www.downloadHandler.text);
+                TranscriptionResponse response = JsonUtility.FromJson<TranscriptionResponse>(www.downloadHandler.text);
+                Debug.Log("Transcription: " + response.transcription);
+                if (transcriptionText != null)
+                {
+                    transcriptionText.text = response.transcription;
+                }
+                else
+                {
+                    Debug.LogError("TranscriptionText reference is not set.");
+                }
+                List<string> animationNames = new List<string>();
+                foreach (Sign sign in response.signs)
+                {
+                    if (!string.IsNullOrEmpty(sign.value))
+                    {
+                        animationNames.Add(sign.value);
+                    }
+                    else
+                    {
+                        animationNames.Add(sign.sign);
+                    }
+                }
+                if (signQueue != null)
+                {
+                    signQueue.StartAnimationQueue(animationNames.ToArray());
+                }
+                else
+                {
+                    Debug.LogError("SignQueue reference is not set.");
+                }
                 // Here we should send the text to be used in the
                 // SignSystem script.
             }
