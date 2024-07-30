@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour
     private string filePath;
     [SerializeField] public SignQueue signQueue;
     private const string apiUrl = "http://192.168.0.121:8001/api/transcribe";
+    private const string hardcodedValue = "a";
 
     public void Start()
     {
@@ -45,6 +46,7 @@ public class UIController : MonoBehaviour
 
     public void ToggleRecording()
     {
+        //PlayAnimationHardcode();
         if (!isRecording)
         {
             StartRecording();
@@ -189,11 +191,13 @@ public class UIController : MonoBehaviour
                         string value = sign.value.ToUpper();
                         value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
                         foreach(char c in value) {
+                            Debug.Log("Adding animation: " + c);
                             animationNames.Add(c.ToString());
                         }
                     }
                     else
                     {
+                        Debug.Log("Adding animation: " + sign.sign);
                         animationNames.Add(sign.sign);
                     }
                 }
@@ -210,6 +214,39 @@ public class UIController : MonoBehaviour
             }
         }
     }
+
+    public void PlayAnimationHardcode() {
+        List<string> animationNames = new List<string>();
+        Sign[] signs = new Sign[1];
+        signs[0] = new Sign();
+        signs[0].sign = "test";
+        signs[0].value = hardcodedValue;
+        foreach (Sign sign in signs)
+            {                
+                if (!string.IsNullOrEmpty(sign.value))
+                {
+                    string value = sign.value.ToUpper();
+                    value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
+                    foreach(char c in value) {
+                        Debug.Log("Adding animation: " + c);
+                        animationNames.Add(c.ToString());
+                    }
+                }
+                else
+                {
+                    Debug.Log("Adding animation: " + sign.sign);
+                    animationNames.Add(sign.sign);
+                }
+            }
+        if (signQueue != null)
+        {
+            signQueue.StartAnimationQueue(animationNames.ToArray());
+        }
+        else
+        {
+            Debug.LogError("SignQueue reference is not set.");
+        }
+}
 
     public void PlayRecordedAudio()
     {
