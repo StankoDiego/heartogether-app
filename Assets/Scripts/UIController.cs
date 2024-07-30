@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
     [SerializeField] public GameObject modal;
     private AudioSource audioSource;
     [SerializeField] public TextMeshProUGUI transcriptionText;
+    [SerializeField] public TextMeshProUGUI transcriptButtonText;
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
