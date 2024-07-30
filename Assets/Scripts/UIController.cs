@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using TMPro;
+using System.Text.RegularExpressions;
+using System.Text;
 
 public class UIController : MonoBehaviour
 {
@@ -184,7 +186,11 @@ public class UIController : MonoBehaviour
                     // Example: Tomás should end up as `T O M A S`.
                     if (!string.IsNullOrEmpty(sign.value))
                     {
-                        animationNames.Add(sign.value);
+                        string value = sign.value.ToUpper();
+                        value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
+                        foreach(char c in value) {
+                            animationNames.Add(sign.value);
+                        }
                     }
                     else
                     {
