@@ -179,6 +179,9 @@ public class UIController : MonoBehaviour
                 List<string> animationNames = new List<string>();
                 foreach (Sign sign in response.signs)
                 {
+                    // TODO: we should split the `sign.value` into UPPER CASE characters
+                    // and remove tildes and add those into the animationNames array.
+                    // Example: Tomás should end up as `T O M A S`.
                     if (!string.IsNullOrEmpty(sign.value))
                     {
                         animationNames.Add(sign.value);
