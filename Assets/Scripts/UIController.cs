@@ -189,7 +189,7 @@ public class UIController : MonoBehaviour
                         string value = sign.value.ToUpper();
                         value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
                         foreach(char c in value) {
-                            animationNames.Add(sign.value);
+                            animationNames.Add(c.ToString());
                         }
                     }
                     else
