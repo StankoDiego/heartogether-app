@@ -15,7 +15,15 @@ public class SignQueue : MonoBehaviour
       { "IDLE", "IdleState" },
       { "HOLA", "HolaState" },
       { "A", "AState" },
-      { "B", "BState" }
+      { "B", "BState" },
+      { "C", "CState" },
+      { "D", "DState" },
+      { "E", "EState" },
+      { "F", "FState" },
+      { "G", "GState" },
+      { "H", "HState" },
+      { "O", "OState" },
+      { "Q", "QState" }
     };
   }
 
