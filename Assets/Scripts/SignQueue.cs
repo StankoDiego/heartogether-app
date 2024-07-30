@@ -22,7 +22,14 @@ public class SignQueue : MonoBehaviour
       { "F", "FState" },
       { "G", "GState" },
       { "H", "HState" },
+      { "I", "IState" },
+      { "J", "JState" },
+      { "K", "KState" },
+      { "L", "LState" },
+      { "M", "MState" },
+      { "N", "NState" },
       { "O", "OState" },
+      { "P", "PState" },
       { "Q", "QState" }
     };
   }
