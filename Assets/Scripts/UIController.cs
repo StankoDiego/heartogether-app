@@ -19,13 +19,18 @@ public class UIController : MonoBehaviour
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
-    private const string apiUrl = "http://192.168.0.121:8001/api/transcribe";
     private const string hardcodedValue = "a";
+    [SerializeField] public Button btnSavePdf;
+    [SerializeField] public Button btnCancelPdf;
+    private const string apiUrl = "http://192.168.1.46:8001/api/transcribe";
 
     public void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         btnTranscripcion.onClick.AddListener(ToggleRecording);
+        btnSavePdf.onClick.AddListener(SavePdf);
+        btnCancelPdf.onClick.AddListener(CloseModal);
+
         modal.SetActive(false);
         signQueue = FindObjectOfType<SignQueue>(); // Automatically find SignQueue component in the scene
         if (signQueue == null)
@@ -70,6 +75,7 @@ public class UIController : MonoBehaviour
 
         if (Microphone.devices.Length > 0)
         {
+            transcriptButtonText.text = "Finalizar Transcripción";
             audioSource.clip = Microphone.Start(null, false, 10, 48000);
             isRecording = true;
             Debug.Log("Recording started");
@@ -87,6 +93,7 @@ public class UIController : MonoBehaviour
         //signQueue.StartAnimationQueue(new string[] { "A", "Hola", "Idle", "Hola", "Hola", "A" });
         if (isRecording)
         {
+            transcriptButtonText.text = "Comenzar Transcripción";
             Microphone.End(null);
             isRecording = false;
             Debug.Log("Recording stopped");
@@ -156,13 +163,8 @@ public class UIController : MonoBehaviour
         Debug.Log(apiUrl);
         using (UnityWebRequest www = UnityWebRequest.Post(apiUrl, form))
         {
-            Debug.Log("PROBANDO");
-            www.timeout = 10;
-
+            www.timeout = 20;
             yield return www.SendWebRequest();
-
-            Debug.Log("PASA POR ACA");
-
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.Log("Error: " + www.error);
@@ -190,7 +192,8 @@ public class UIController : MonoBehaviour
                     {
                         string value = sign.value.ToUpper();
                         value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
-                        foreach(char c in value) {
+                        foreach (char c in value)
+                        {
                             Debug.Log("Adding animation: " + c);
                             animationNames.Add(c.ToString());
                         }
@@ -203,7 +206,10 @@ public class UIController : MonoBehaviour
                 }
                 if (signQueue != null)
                 {
-                    signQueue.StartAnimationQueue(animationNames.ToArray());
+                    signQueue.StartAnimationQueue(animationNames.ToArray(), () =>
+                    {
+                        OpenModal();
+                    });
                 }
                 else
                 {
@@ -215,38 +221,48 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void PlayAnimationHardcode() {
+    public void PlayAnimationHardcode()
+    {
         List<string> animationNames = new List<string>();
         Sign[] signs = new Sign[1];
         signs[0] = new Sign();
         signs[0].sign = "test";
         signs[0].value = hardcodedValue;
         foreach (Sign sign in signs)
-            {                
-                if (!string.IsNullOrEmpty(sign.value))
+        {
+            if (!string.IsNullOrEmpty(sign.value))
+            {
+                string value = sign.value.ToUpper();
+                value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
+                foreach (char c in value)
                 {
-                    string value = sign.value.ToUpper();
-                    value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
-                    foreach(char c in value) {
-                        Debug.Log("Adding animation: " + c);
-                        animationNames.Add(c.ToString());
-                    }
-                }
-                else
-                {
-                    Debug.Log("Adding animation: " + sign.sign);
-                    animationNames.Add(sign.sign);
+                    Debug.Log("Adding animation: " + c);
+                    animationNames.Add(c.ToString());
                 }
             }
+            else
+            {
+                Debug.Log("Adding animation: " + sign.sign);
+                animationNames.Add(sign.sign);
+            }
+        }
         if (signQueue != null)
         {
-            signQueue.StartAnimationQueue(animationNames.ToArray());
+            signQueue.StartAnimationQueue(animationNames.ToArray(), () =>
+            {
+                OpenModal();
+            });
         }
         else
         {
             Debug.LogError("SignQueue reference is not set.");
         }
-}
+    }
+    public void SavePdf()
+    {
+        string retrievedText = transcriptionText.text;
+        Debug.Log("Retrieved text: " + retrievedText);
+    }
 
     public void PlayRecordedAudio()
     {

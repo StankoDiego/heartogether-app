@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SignQueue : MonoBehaviour
 {
- 
+
   public Animator animator;
   public Dictionary<string, string> animations;
 
@@ -34,12 +34,12 @@ public class SignQueue : MonoBehaviour
     };
   }
 
-  public void StartAnimationQueue(string[] animationNames)
+  public void StartAnimationQueue(string[] animationNames, System.Action onComplete)
   {
-    StartCoroutine(PlayAnimations(animationNames));
+    StartCoroutine(PlayAnimations(animationNames, onComplete));
   }
 
-  private IEnumerator PlayAnimations(string[] animationNames)
+  private IEnumerator PlayAnimations(string[] animationNames, System.Action onComplete)
   {
     foreach (var animationName in animationNames)
     {
@@ -55,6 +55,7 @@ public class SignQueue : MonoBehaviour
     }
 
     animator.Play("IDLE");
+    onComplete?.Invoke();
   }
 
 }
