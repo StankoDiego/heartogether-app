@@ -10,7 +10,7 @@ public class ControllerUI : MonoBehaviour
     [SerializeField] private GameObject documentoPrefab;
     [SerializeField] private Transform panelTransform;
     private int verticalSpacing = 135; // Espaciado vertical entre los TextMesh
-    private int initialPosY = 170;
+    private int initialPosY = 200;
     void Start()
     {
         string[] filesNames = GetAllPDFs();
@@ -19,7 +19,7 @@ public class ControllerUI : MonoBehaviour
         {
             string fileName = Path.GetFileName(filesNames[i]);
             int posY = CalculatePositionY(i);
-            CreatePrefab(fileName, new Vector3(0, posY, 0));
+            CreatePrefab(fileName, new Vector3(0, posY, 0), i);
         }
     }
 
@@ -34,7 +34,7 @@ public class ControllerUI : MonoBehaviour
         return initialPosY - (index * verticalSpacing);
     }
 
-    void CreatePrefab(string text, Vector3 position)
+    void CreatePrefab(string text, Vector3 position, int id)
     {
         // Instanciar el prefab de TextMesh
         GameObject cardDocument = Instantiate(documentoPrefab, panelTransform);

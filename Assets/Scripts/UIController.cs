@@ -24,7 +24,7 @@ public class UIController : MonoBehaviour
     [SerializeField] public Button btnCancelPdf;
 
 
-    private const string apiUrl = "http://192.168.1.46:8001/api/transcribe";
+    private const string apiUrl = "http://192.168.1.46:8083/api/transcribe";
 
     public void Start()
     {
