@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControllerUI : MonoBehaviour
 {
@@ -13,13 +14,12 @@ public class ControllerUI : MonoBehaviour
     private int initialPosY = 200;
     void Start()
     {
-        string[] filesNames = GetAllPDFs();
+        string[] filesPaths = GetAllPDFs();
 
-        for (int i = 0; i < filesNames.Length; i++)
+        for (int i = 0; i < filesPaths.Length; i++)
         {
-            string fileName = Path.GetFileName(filesNames[i]);
             int posY = CalculatePositionY(i);
-            CreatePrefab(fileName, new Vector3(0, posY, 0), i);
+            CreatePrefab(filesPaths[i], new Vector3(0, posY, 0));
         }
     }
 
@@ -34,13 +34,13 @@ public class ControllerUI : MonoBehaviour
         return initialPosY - (index * verticalSpacing);
     }
 
-    void CreatePrefab(string text, Vector3 position, int id)
+    void CreatePrefab(string filePath, Vector3 position)
     {
         // Instanciar el prefab de TextMesh
         GameObject cardDocument = Instantiate(documentoPrefab, panelTransform);
         cardDocument.transform.localPosition = position;
 
-        string fileName = text.Split(".")[0];
+        string fileName = Path.GetFileName(filePath).Split(".")[0];
 
         DateTime dateTime = DateTime.ParseExact(fileName, "yyyyMMddHHmmss", null);
 
@@ -54,6 +54,18 @@ public class ControllerUI : MonoBehaviour
         if (horaTMP != null)
         {
             horaTMP.text = dateTime.ToString("HH:mm:ss");
+        }
+
+        PrefabController prefabController = cardDocument.GetComponent<PrefabController>();
+        if (prefabController != null)
+        {
+            prefabController.SetData(filePath);
+        }
+
+        Button button = cardDocument.GetComponent<Button>();
+        if (button != null)
+        {
+            button.onClick.AddListener(prefabController.OnClick);
         }
     }
 }

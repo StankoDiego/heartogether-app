@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 6212508955650699923}
   - component: {fileID: 977566264273188038}
   - component: {fileID: 7650524376033280542}
+  - component: {fileID: 534632525949292065}
   m_Layer: 0
   m_Name: Ver
   m_TagString: Untagged
@@ -271,6 +272,62 @@ MonoBehaviour:
   m_Sprite: {fileID: 3286163911610860551, guid: a398dfc2de965fd4d90814325f3dcadd,
     type: 3}
   m_PreserveAspect: 0
+--- !u!114 &534632525949292065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6264587876530513014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 7650524376033280542}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7658103570770348884}
+        m_TargetAssemblyTypeName: PrefabController, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7733446644970059655
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,6 +339,7 @@ GameObject:
   - component: {fileID: 7984808689981755363}
   - component: {fileID: 4844382406278889358}
   - component: {fileID: 5859936134255382147}
+  - component: {fileID: 7658103570770348884}
   m_Layer: 0
   m_Name: CardDocument
   m_TagString: Untagged
@@ -343,6 +401,18 @@ MonoBehaviour:
   m_Sprite: {fileID: 3286163911610860551, guid: 8cbd0e73a51caf241a030a8dd96adf6c,
     type: 3}
   m_PreserveAspect: 0
+--- !u!114 &7658103570770348884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7733446644970059655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44cb958d75dc6b149a4c35c3c618cb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9100002459961393038
 GameObject:
   m_ObjectHideFlags: 0
