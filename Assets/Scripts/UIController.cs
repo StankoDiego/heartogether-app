@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
-    private const string apiUrl = "http://192.168.0.121:8001/api/transcribe";
+    private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
     private const string hardcodedValue = "a";
 
     public void Start()
@@ -27,6 +27,7 @@ public class UIController : MonoBehaviour
         audioSource = gameObject.AddComponent<AudioSource>();
         btnTranscripcion.onClick.AddListener(ToggleRecording);
         modal.SetActive(false);
+        transcriptButtonText.text = "Comenzar transcripción";
         signQueue = FindObjectOfType<SignQueue>(); // Automatically find SignQueue component in the scene
         if (signQueue == null)
         {
@@ -49,10 +50,12 @@ public class UIController : MonoBehaviour
         //PlayAnimationHardcode();
         if (!isRecording)
         {
+            transcriptButtonText.text = "Detener transcripción";
             StartRecording();
         }
         else
         {
+            transcriptButtonText.text = "PROCESANDO TRANSCRIPCIÓN";
             StopRecording();
         }
     }
@@ -91,7 +94,6 @@ public class UIController : MonoBehaviour
             isRecording = false;
             Debug.Log("Recording stopped");
             SaveRecording(audioSource.clip);
-            PlayRecordedAudio();
         }
     }
 
@@ -165,10 +167,14 @@ public class UIController : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
+                transcriptButtonText.text = "Comenzar transcripción";
                 Debug.Log("Error: " + www.error);
             }
             else
             {
+                transcriptButtonText.text = "Comenzar transcripción";
+                PlayRecordedAudio();
+
                 Debug.Log("Response: " + www.downloadHandler.text);
                 TranscriptionResponse response = JsonUtility.FromJson<TranscriptionResponse>(www.downloadHandler.text);
                 Debug.Log("Transcription: " + response.transcription);
