@@ -20,7 +20,6 @@ public class UIController : MonoBehaviour
     private string filePath;
     [SerializeField] public SignQueue signQueue;
     private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
-    private const string hardcodedValue = "a";
 
     public void Start()
     {
@@ -223,10 +222,16 @@ public class UIController : MonoBehaviour
 
     public void PlayAnimationHardcode() {
         List<string> animationNames = new List<string>();
-        Sign[] signs = new Sign[1];
+        Sign[] signs = new Sign[4];
         signs[0] = new Sign();
-        signs[0].sign = "test";
-        signs[0].value = hardcodedValue;
+        signs[0].sign = "HOLA";
+        signs[1] = new Sign();
+        signs[1].sign = "MIO";
+        signs[2] = new Sign();
+        signs[2].sign = "test";
+        signs[2].value = "nacho";
+        signs[3] = new Sign();
+        signs[3].sign = "CHAU";
         foreach (Sign sign in signs)
             {                
                 if (!string.IsNullOrEmpty(sign.value))
