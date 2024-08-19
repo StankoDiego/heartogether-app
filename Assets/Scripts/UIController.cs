@@ -32,6 +32,7 @@ public class UIController : MonoBehaviour
         btnCancelPdf.onClick.AddListener(CloseModal);
 
         modal.SetActive(false);
+        transcriptButtonText.text = "Comenzar transcripción";
         signQueue = FindObjectOfType<SignQueue>(); // Automatically find SignQueue component in the scene
         if (signQueue == null)
         {
@@ -54,10 +55,12 @@ public class UIController : MonoBehaviour
         //PlayAnimationHardcode();
         if (!isRecording)
         {
+            transcriptButtonText.text = "Detener transcripción";
             StartRecording();
         }
         else
         {
+            transcriptButtonText.text = "PROCESANDO TRANSCRIPCIÓN";
             StopRecording();
         }
     }
@@ -98,7 +101,6 @@ public class UIController : MonoBehaviour
             isRecording = false;
             Debug.Log("Recording stopped");
             SaveRecording(audioSource.clip);
-            PlayRecordedAudio();
         }
     }
 
@@ -167,10 +169,14 @@ public class UIController : MonoBehaviour
             yield return www.SendWebRequest();
             if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
             {
+                transcriptButtonText.text = "Comenzar transcripción";
                 Debug.Log("Error: " + www.error);
             }
             else
             {
+                transcriptButtonText.text = "Comenzar transcripción";
+                PlayRecordedAudio();
+
                 Debug.Log("Response: " + www.downloadHandler.text);
                 TranscriptionResponse response = JsonUtility.FromJson<TranscriptionResponse>(www.downloadHandler.text);
                 Debug.Log("Transcription: " + response.transcription);
@@ -224,10 +230,16 @@ public class UIController : MonoBehaviour
     public void PlayAnimationHardcode()
     {
         List<string> animationNames = new List<string>();
-        Sign[] signs = new Sign[1];
+        Sign[] signs = new Sign[4];
         signs[0] = new Sign();
-        signs[0].sign = "test";
-        signs[0].value = hardcodedValue;
+        signs[0].sign = "HOLA";
+        signs[1] = new Sign();
+        signs[1].sign = "MIO";
+        signs[2] = new Sign();
+        signs[2].sign = "test";
+        signs[2].value = "nacho";
+        signs[3] = new Sign();
+        signs[3].sign = "CHAU";
         foreach (Sign sign in signs)
         {
             if (!string.IsNullOrEmpty(sign.value))
