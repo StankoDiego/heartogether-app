@@ -22,7 +22,9 @@ public class UIController : MonoBehaviour
     private const string hardcodedValue = "a";
     [SerializeField] public Button btnSavePdf;
     [SerializeField] public Button btnCancelPdf;
-    private const string apiUrl = "http://192.168.1.46:8001/api/transcribe";
+
+
+    private const string apiUrl = "http://192.168.1.46:8083/api/transcribe";
 
     public void Start()
     {
@@ -273,7 +275,7 @@ public class UIController : MonoBehaviour
     public void SavePdf()
     {
         string retrievedText = transcriptionText.text;
-        Debug.Log("Retrieved text: " + retrievedText);
+        PDFManager.CreateAndSavePdf(retrievedText, modal,transcriptionText);
     }
 
     public void PlayRecordedAudio()

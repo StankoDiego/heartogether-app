@@ -4013,7 +4013,7 @@ MonoBehaviour:
   btnTranscripcion: {fileID: 949948361}
   modal: {fileID: 734874512}
   transcriptionText: {fileID: 1619597415}
-  btnTranscriptionText: {fileID: 9467398}
+  transcriptButtonText: {fileID: 9467398}
   signQueue: {fileID: 1820845882}
   btnSavePdf: {fileID: 800028538}
   btnCancelPdf: {fileID: 1351313876}
