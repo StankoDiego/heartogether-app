@@ -16,15 +16,18 @@ public class UIController : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] public TextMeshProUGUI transcriptionText;
     [SerializeField] public TextMeshProUGUI transcriptButtonText;
+    [SerializeField] public TextMeshProUGUI languageButtonText;
+    [SerializeField] public Button btnLanguage;
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
     private const string hardcodedValue = "a";
     [SerializeField] public Button btnSavePdf;
     [SerializeField] public Button btnCancelPdf;
+    private string language = "es-AR";
 
 
-    private const string apiUrl = "http://192.168.1.46:8083/api/transcribe";
+    private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
 
     public void Start()
     {
@@ -32,6 +35,7 @@ public class UIController : MonoBehaviour
         btnTranscripcion.onClick.AddListener(ToggleRecording);
         btnSavePdf.onClick.AddListener(SavePdf);
         btnCancelPdf.onClick.AddListener(CloseModal);
+        btnLanguage.onClick.AddListener(ToggleLanguage);
 
         modal.SetActive(false);
         transcriptButtonText.text = "Comenzar transcripción";
@@ -50,6 +54,20 @@ public class UIController : MonoBehaviour
     public void CloseModal()
     {
         modal.SetActive(false);
+    }
+
+    public void ToggleLanguage()
+    {
+        if (language == "es-AR")
+        {
+            languageButtonText.text = "EN";
+            language = "en-US";
+        } 
+        else
+        {
+            languageButtonText.text = "ES";
+            language = "es-AR";
+        }
     }
 
     public void ToggleRecording()
@@ -163,6 +181,7 @@ public class UIController : MonoBehaviour
         byte[] fileData = File.ReadAllBytes(filePath);
         WWWForm form = new WWWForm();
         form.AddBinaryData("audio", fileData, "audio.mp3", "audio/mpeg");
+        form.AddField("language", language);
 
         Debug.Log(apiUrl);
         using (UnityWebRequest www = UnityWebRequest.Post(apiUrl, form))
