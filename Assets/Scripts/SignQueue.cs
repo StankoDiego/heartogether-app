@@ -59,7 +59,8 @@ public class SignQueue : MonoBehaviour
       { "TU", "TuState" },
       { "TUYO", "TuyoState" },
       { "USTEDES", "UstedesState" },
-      { "YO", "YoState" }
+      { "YO", "YoState" },
+      { "APELLIDO", "ApellidoState"}
     };
   }
 

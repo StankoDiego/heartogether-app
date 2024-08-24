@@ -251,16 +251,18 @@ public class UIController : MonoBehaviour
     public void PlayAnimationHardcode()
     {
         List<string> animationNames = new List<string>();
-        Sign[] signs = new Sign[4];
+        Sign[] signs = new Sign[5];
         signs[0] = new Sign();
-        signs[0].sign = "HOLA";
+        signs[0].sign = "APELLIDO";
         signs[1] = new Sign();
-        signs[1].sign = "MIO";
+        signs[1].sign = "HOLA";
         signs[2] = new Sign();
-        signs[2].sign = "test";
-        signs[2].value = "nacho";
+        signs[2].sign = "MIO";
         signs[3] = new Sign();
-        signs[3].sign = "CHAU";
+        signs[3].sign = "test";
+        signs[3].value = "nacho";
+        signs[4] = new Sign();
+        signs[4].sign = "CHAU";
         foreach (Sign sign in signs)
         {
             if (!string.IsNullOrEmpty(sign.value))
