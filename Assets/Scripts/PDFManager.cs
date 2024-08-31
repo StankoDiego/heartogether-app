@@ -5,17 +5,20 @@ using UnityEngine;
 
 public class PDFManager : MonoBehaviour
 {
-    public static void CreateAndSavePdf(string data, GameObject modal, TMPro.TextMeshProUGUI transcriptionText)
+    public static void CreateAndSavePdf(string data, GameObject modal, TMPro.TextMeshProUGUI transcriptionText, string responseTxt)
     {
         string fileName = System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+        string fileNameTxt = System.DateTime.Now.ToString("yyyyMMddHHmmss") + ".txt";
         string path = Path.Combine(Application.persistentDataPath, fileName);
+
+        string pathTxt = Path.Combine(Application.persistentDataPath, fileNameTxt);
 
         Document document = new Document();
         PdfWriter.GetInstance(document, new FileStream(path, FileMode.Create));
         document.Open();
         document.Add(new Paragraph(data));
         document.Close();
-        Debug.Log("PDF creado y guardado en: " + path);
+        File.WriteAllText(pathTxt, responseTxt);
         modal.SetActive(false);
         transcriptionText.text = "";
     }
