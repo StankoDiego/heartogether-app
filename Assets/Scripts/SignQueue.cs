@@ -60,7 +60,8 @@ public class SignQueue : MonoBehaviour
       { "TUYO", "TuyoState" },
       { "USTEDES", "UstedesState" },
       { "YO", "YoState" },
-      { "APELLIDO", "ApellidoState"}
+      { "APELLIDO", "ApellidoState" },
+      { "NOMBRE", "NombreState" }
     };
   }
 
@@ -76,7 +77,7 @@ public class SignQueue : MonoBehaviour
       if (animations.TryGetValue(animationName, out string animationState))
       {
         animator.Play(animationState);
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length + 0.5f);
       }
       else
       {

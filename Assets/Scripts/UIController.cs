@@ -12,12 +12,14 @@ public class UIController : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] public Button btnTranscripcion;
+    [SerializeField] public Button btnDemo;
     [SerializeField] public GameObject modal;
     private AudioSource audioSource;
     [SerializeField] public TextMeshProUGUI transcriptionText;
+    [SerializeField] public TextMeshProUGUI demoText;
     [SerializeField] public TextMeshProUGUI transcriptButtonText;
     [SerializeField] public TextMeshProUGUI languageButtonText;
-    [SerializeField] public Button btnLanguage;
+    //[SerializeField] public Button btnLanguage;
     private bool isRecording = false;
     private string filePath;
     [SerializeField] public SignQueue signQueue;
@@ -27,15 +29,17 @@ public class UIController : MonoBehaviour
     private string language = "es-AR";
 
 
-    private const string apiUrl = "http://192.168.16.99:8001/api/transcribe";
+    private const string apiUrl = "http://192.168.1.32:8001/api/transcribe";
+    private const string demoApiUrl = "http://192.168.1.32:8001/api/interpretDemo";
 
     public void Start()
     {
         audioSource = gameObject.AddComponent<AudioSource>();
         btnTranscripcion.onClick.AddListener(ToggleRecording);
+        btnDemo.onClick.AddListener(StartDemo);
         btnSavePdf.onClick.AddListener(SavePdf);
         btnCancelPdf.onClick.AddListener(CloseModal);
-        btnLanguage.onClick.AddListener(ToggleLanguage);
+        //btnLanguage.onClick.AddListener(ToggleLanguage);
 
         modal.SetActive(false);
         transcriptButtonText.text = "Comenzar transcripción";
@@ -43,6 +47,79 @@ public class UIController : MonoBehaviour
         if (signQueue == null)
         {
             Debug.LogWarning("SignQueue not found!");
+        }
+    }
+
+    private void StartDemo() {
+        Debug.Log("Starting Demo");
+        StartCoroutine(SendDemoRequest());
+    }
+
+    IEnumerator SendDemoRequest() {
+        Debug.Log(demoApiUrl);
+        WWWForm form = new WWWForm();
+        using (UnityWebRequest www = UnityWebRequest.Post(demoApiUrl, form))
+        {
+            www.timeout = 20;
+            Debug.Log("Sending request");
+            yield return www.SendWebRequest();
+            if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
+            {
+                demoText.text = "Comenzar transcripción";
+                Debug.Log("Error: " + www.error);
+            }
+            else
+            {
+                demoText.text = "Comenzar transcripción";
+                PlayRecordedAudio();
+
+                Debug.Log("Response: " + www.downloadHandler.text);
+                TranscriptionResponse response = JsonUtility.FromJson<TranscriptionResponse>(www.downloadHandler.text);
+                Debug.Log("Transcription: " + response.transcription);
+                if (transcriptionText != null)
+                {
+                    transcriptionText.text = response.transcription;
+                }
+                else
+                {
+                    Debug.LogError("TranscriptionText reference is not set.");
+                }
+                List<string> animationNames = new List<string>();
+                foreach (Sign sign in response.signs)
+                {
+                    // TODO: we should split the `sign.value` into UPPER CASE characters
+                    // and remove tildes and add those into the animationNames array.
+                    // Example: Tomás should end up as `T O M A S`.
+                    if (!string.IsNullOrEmpty(sign.value))
+                    {
+                        string value = sign.value.ToUpper();
+                        value = Regex.Replace(value.Normalize(NormalizationForm.FormD), @"[^a-zA-z0-9 ]+", "");
+                        foreach (char c in value)
+                        {
+                            Debug.Log("Adding animation: " + c);
+                            animationNames.Add(c.ToString());
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Adding animation: " + sign.sign);
+                        animationNames.Add(sign.sign);
+                    }
+                }
+                if (signQueue != null)
+                {
+                    signQueue.StartAnimationQueue(animationNames.ToArray(), () =>
+                    {
+                        Debug.Log("Test successful!");
+                    });
+                }
+                else
+                {
+                    Debug.LogError("SignQueue reference is not set.");
+                }
+                // Here we should send the text to be used in the
+                // SignSystem script.
+            }
         }
     }
 
@@ -248,7 +325,7 @@ public class UIController : MonoBehaviour
         }
     }
 
-    public void PlayAnimationHardcode()
+/*    public void PlayAnimationHardcode()
     {
         List<string> animationNames = new List<string>();
         Sign[] signs = new Sign[5];
@@ -292,7 +369,8 @@ public class UIController : MonoBehaviour
         {
             Debug.LogError("SignQueue reference is not set.");
         }
-    }
+    }*/
+
     public void SavePdf()
     {
         string retrievedText = transcriptionText.text;
