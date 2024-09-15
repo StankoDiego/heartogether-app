@@ -76,8 +76,8 @@ public class SignQueue : MonoBehaviour
     {
       if (animations.TryGetValue(animationName, out string animationState))
       {
-        animator.Play(animationState);
-        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length + 0.5f);
+        animator.CrossFade(animationState, 0.25f);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
       }
       else
       {
